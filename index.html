@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Math Quiz Game</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(#e3f2fd, #90caf9);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+    .quiz-container {
+      background: white;
+      padding: 20px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+    }
+    h1 {
+      color: #1976d2;
+      margin-bottom: 10px;
+    }
+    .question {
+      font-size: 20px;
+      margin: 20px 0;
+    }
+    .options button {
+      display: block;
+      width: 100%;
+      margin: 8px 0;
+      padding: 12px;
+      font-size: 16px;
+      border: 2px solid #1976d2;
+      border-radius: 10px;
+      background-color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .options button:hover {
+      background-color: #1976d2;
+      color: white;
+    }
+    .score {
+      font-size: 18px;
+      margin-top: 20px;
+    }
+    .btn-restart {
+      margin-top: 15px;
+      background-color: #1976d2;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .btn-restart:hover {
+      background-color: #0d47a1;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <h1>Math Quiz</h1>
+  <div id="question" class="question">Loading...</div>
+  <div class="options" id="options"></div>
+  <div class="score" id="score">Score: 0</div>
+  <button class="btn-restart" onclick="restartQuiz()">Restart</button>
+</div>
+
+<script>
+  const quizData = [
+    { question: "5 + 3 = ?", options: ["6", "8", "9", "7"], answer: "8" },
+    { question: "9 - 4 = ?", options: ["5", "4", "6", "3"], answer: "5" },
+    { question: "7 x 2 = ?", options: ["12", "14", "16", "13"], answer: "14" },
+    { question: "12 ÷ 4 = ?", options: ["3", "2", "4", "5"], answer: "3" },
+    { question: "15 + 6 = ?", options: ["21", "20", "19", "22"], answer: "21" }
+  ];
+
+  let current = 0;
+  let score = 0;
+
+  function loadQuestion() {
+    const q = quizData[current];
+    document.getElementById("question").innerText = q.question;
+
+    const optionsHTML = q.options.map(opt => `
+      <button onclick="checkAnswer('${opt}')">${opt}</button>
+    `).join('');
+    document.getElementById("options").innerHTML = optionsHTML;
+  }
+
+  function checkAnswer(selected) {
+    const correct = quizData[current].answer;
+    if (selected === correct) {
+      score++;
+      alert("✅ Correct!");
+    } else {
+      alert("❌ Wrong! Correct Answer: " + correct);
+    }
+    current++;
+    if (current < quizData.length) {
+      loadQuestion();
+    } else {
+      document.getElementById("question").innerText = "Quiz Finished!";
+      document.getElementById("options").innerHTML = "";
+    }
+    document.getElementById("score").innerText = "Score: " + score;
+  }
+
+  function restartQuiz() {
+    current = 0;
+    score = 0;
+    document.getElementById("score").innerText = "Score: 0";
+    loadQuestion();
+  }
+
+  // Start Quiz
+  loadQuestion();
+</script>
+
+</body>
+</html>
